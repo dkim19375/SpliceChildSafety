@@ -49,7 +49,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.mojang:brigadier:1.0.18")
+    compileOnly("com.mojang:brigadier:1.0.500")
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
