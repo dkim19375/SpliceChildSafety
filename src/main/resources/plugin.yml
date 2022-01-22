@@ -1,0 +1,13 @@
+name: SpliceChildSafety
+main: me.dkim19375.splicechildsafety.SpliceChildSafety
+version: ${pluginVersion}
+depend:
+  - PlaceholderAPI
+  - ProtocolLib
+author: dkim19375
+api-version: 1.17
+
+commands:
+  childsafetymode:
+    aliases:
+      - childsafety
