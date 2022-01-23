@@ -18,8 +18,9 @@
 
 package me.dkim19375.splicechildsafety.listener
 
+import me.dkim19375.dkimbukkitcore.function.formatAll
 import me.dkim19375.splicechildsafety.SpliceChildSafety
-import me.dkim19375.splicechildsafety.data.PlayerData
+import me.dkim19375.splicechildsafety.data.*
 import org.bukkit.event.*
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import java.util.*
@@ -30,12 +31,41 @@ class AsyncPlayerChatListener(private val plugin: SpliceChildSafety) : Listener 
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     private fun AsyncPlayerChatEvent.onChat() {
+        checkChatDisabler()
+        if (isCancelled) {
+            return
+        }
+        checkChatFilter()
+    }
+
+    private fun AsyncPlayerChatEvent.checkChatDisabler() {
         if (playerData[player.uniqueId]?.chatRestricted == true) {
+            player.sendMessage(plugin.mainConfig.get(MainConfigFile.ACTIONS).disableChat.message.formatAll(player))
             isCancelled = true
             return
         }
         for (recipient in recipients.toSet()) {
             if (playerData[recipient.uniqueId]?.chatRestricted == true) {
+                recipients.remove(recipient)
+            }
+        }
+    }
+
+    private fun AsyncPlayerChatEvent.checkChatFilter() {
+        val config = plugin.mainConfig.get(MainConfigFile.ACTIONS).chatFilter
+        val regexFilters = plugin.chatFilterRegexes.toSet()
+        val regularFilters = config.regularFilters
+        if (regularFilters.none { filter -> message.contains(filter) }
+            && regexFilters.none { filter -> message.contains(filter) }) {
+            return
+        }
+        if (playerData[player.uniqueId]?.chatFilterEnabled == true) {
+            player.sendMessage(config.message.formatAll(player))
+            isCancelled = true
+            return
+        }
+        for (recipient in recipients.toSet()) {
+            if (playerData[recipient.uniqueId]?.chatFilterEnabled == true) {
                 recipients.remove(recipient)
             }
         }

@@ -26,7 +26,30 @@ import me.mattstudios.config.properties.Property
 object MainConfigFile : SettingsHolder {
     @Path("gui.picker")
     val PICKER_GUI = Property.create(PickerGUIData())
+
+    @Path("actions")
+    val ACTIONS = Property.create(ActionsData())
 }
+
+data class ActionsData(
+    @Name("disable-chat")
+    var disableChat: DisableChatActions = DisableChatActions(),
+    @Name("chat-filter")
+    var chatFilter: ChatFilterActions = ChatFilterActions()
+)
+
+data class ChatFilterActions(
+    @Name("regular-filters")
+    var regularFilters: Set<String> = setOf("filtered phrase"),
+    @Name("regex-filters")
+    var regexFilters: Set<String> = setOf("filtered (phrase|word)"),
+    var message: String = "&cPlease follow chat rules!"
+)
+
+data class DisableChatActions(
+    var message: String = "&cYou are currently in Child Safety Mode. " +
+            "Use &6/childsafetymode &cto be able to talk in chat again!"
+)
 
 data class PickerGUIData(
     var title: String = "Pick your safety modes!",
@@ -48,50 +71,89 @@ data class PickerGUIItems(
     var disableChat: ToggleableGUIItem = ToggleableGUIItem(
         row = 1,
         column = 4,
-        enabled = ItemStackData(
-            material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) "OAK_SIGN" else "SIGN",
-            displayName = "&cChat Disabled",
-            lore = listOf(
-                " ",
-                "&6Click to enable!"
-            )
+        enabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) "OAK_SIGN" else "SIGN",
+                displayName = "&cChat Disabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to enable!"
+                )
+            ),
+            message = "&aSuccessfully enabled chat!"
         ),
-        disabled = ItemStackData(
-            material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) "OAK_SIGN" else "SIGN",
-            displayName = "&aChat Enabled",
-            lore = listOf(
-                " ",
-                "&6Click to disable!"
-            )
+        disabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) "OAK_SIGN" else "SIGN",
+                displayName = "&aChat Enabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to disable!"
+                )
+            ),
+            message = "&6Successfully disabled chat!"
         )
     ),
     @Name("disable-skins")
     var disableSkins: ToggleableGUIItem = ToggleableGUIItem(
         row = 1,
-        column = 6,
-        enabled = ItemStackData(
-            material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) {
-                "PLAYER_HEAD"
-            } else {
-                "SKULL_ITEM:3"
-            },
-            displayName = "&cSkins Disabled",
-            lore = listOf(
-                " ",
-                "&6Click to enable!"
-            )
+        column = 5,
+        enabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) {
+                    "PLAYER_HEAD"
+                } else {
+                    "SKULL_ITEM:3"
+                },
+                displayName = "&cSkins Disabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to enable!"
+                )
+            ),
+            message = "&aSuccessfully enabled skins!"
         ),
-        disabled = ItemStackData(
-            material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) {
-                "PLAYER_HEAD"
-            } else {
-                "SKULL_ITEM:3"
-            },
-            displayName = "&aSkins Enabled",
-            lore = listOf(
-                " ",
-                "&6Click to disable!"
-            )
+        disabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = if (MinecraftVersion.CURRENT_VERSION.isAtLeast(MinecraftVersion.V1_17)) {
+                    "PLAYER_HEAD"
+                } else {
+                    "SKULL_ITEM:3"
+                },
+                displayName = "&aSkins Enabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to disable!"
+                )
+            ),
+            message = "&6Successfully disabled skins!"
+        )
+    ),
+    @Name("chat-filter")
+    var chatFilter: ToggleableGUIItem = ToggleableGUIItem(
+        row = 1,
+        column = 6,
+        enabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = "TNT",
+                displayName = "&aChat Filter Enabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to disable!"
+                )
+            ),
+            message = "&6Successfully disabled the chat filter!"
+        ),
+        disabled = ToggledGUIItem(
+            item = ItemStackData(
+                material = "TNT",
+                displayName = "&cChat Filter Disabled",
+                lore = listOf(
+                    " ",
+                    "&6Click to disable!"
+                )
+            ),
+            message = "&aSuccessfully enabled the chat filter!"
         )
     ),
 )
@@ -99,6 +161,11 @@ data class PickerGUIItems(
 data class ToggleableGUIItem(
     var row: Int = 1,
     var column: Int = 1,
-    var enabled: ItemStackData = ItemStackData(),
-    var disabled: ItemStackData = ItemStackData(),
+    var enabled: ToggledGUIItem = ToggledGUIItem(),
+    var disabled: ToggledGUIItem = ToggledGUIItem(),
+)
+
+data class ToggledGUIItem(
+    var item: ItemStackData = ItemStackData(),
+    var message: String = "Invalid"
 )

@@ -11,7 +11,7 @@ plugins {
 val KT_VER = "1.6.10"
 
 group = "me.dkim19375"
-version = "1.0.0"
+version = "1.1.0"
 
 val basePackage = "me.dkim19375.${project.name.toLowerCase()}.libs"
 val fileName = tasks.shadowJar.get().archiveFileName.get()
@@ -79,7 +79,7 @@ tasks.create("removeBuildJars") {
     }
 }
 
-val server = "1.8"
+val server = "1.17"
 val servers = setOf(
     "1.8",
     "1.16",

@@ -34,6 +34,7 @@ class SpliceChildSafety : CoreJavaPlugin() {
     val mainConfig by lazy { YamlFile(MainConfigFile, File(dataFolder, "config.yml")) }
     val dataFile by lazy { JsonFile(MainDataFile::class, File(dataFolder, "data.json"), prettyPrinting = false) }
     private val packetManager by lazy { PacketManager(this) }
+    var chatFilterRegexes = emptySet<Regex>()
 
     override fun onEnable() {
         logInfo("Successfully enabled ${description.name} in ${
@@ -45,7 +46,14 @@ class SpliceChildSafety : CoreJavaPlugin() {
                 packetManager.register()
                 registerListener(AsyncPlayerChatListener(this), PlayerCommandListener(this))
                 registerCommand("childsafetymode", MainCommand(this))
+                reloadConfig()
             }
         }ms!")
+    }
+
+    override fun reloadConfig() {
+        chatFilterRegexes = mainConfig.get(MainConfigFile.ACTIONS).chatFilter.regexFilters.map { str ->
+            str.toRegex(RegexOption.IGNORE_CASE)
+        }.toSet()
     }
 }

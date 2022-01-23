@@ -20,5 +20,6 @@ package me.dkim19375.splicechildsafety.data
 
 data class PlayerData(
     val chatRestricted: Boolean = false,
-    val skinRestricted: Boolean = false
+    val skinRestricted: Boolean = false,
+    val chatFilterEnabled: Boolean = false,
 )

@@ -81,6 +81,15 @@ class PickerGUI(private val player: Player, private val plugin: SpliceChildSafet
             }
             player.updateSkinsForOthers()
         }
+        addItem(items.chatFilter, playerData?.chatFilterEnabled == true) {
+            saveData { data ->
+                data?.copy(
+                    chatFilterEnabled = it
+                ) ?: PlayerData(
+                    chatFilterEnabled = it
+                )
+            }
+        }
     }
 
     private fun addItem(config: ToggleableGUIItem, enabled: Boolean, action: (Boolean) -> Unit) = menu.setItem(
@@ -88,13 +97,18 @@ class PickerGUI(private val player: Player, private val plugin: SpliceChildSafet
         config.column,
         GuiItem(
             if (enabled) {
-                config.enabled
+                config.enabled.item
             } else {
-                config.disabled
+                config.disabled.item
             }.getItemStack(player)
         ) {
             it.isCancelled = true
             action(!enabled)
+            player.sendMessage(if (enabled) {
+                config.enabled.message
+            } else {
+                config.disabled.message
+            }.formatAll(player))
             plugin.mainConfig.get(MainConfigFile.PICKER_GUI).sound.playSound(player)
             setup()
             menu.update()
