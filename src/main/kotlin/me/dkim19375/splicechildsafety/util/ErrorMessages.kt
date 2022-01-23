@@ -18,23 +18,11 @@
 
 package me.dkim19375.splicechildsafety.util
 
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import org.bukkit.permissions.Permissible
+import net.md_5.bungee.api.ChatColor
 
-fun Player.updateSkinsForOthers() {
-    for (other in world.players) {
-        if (other.uniqueId == uniqueId) {
-            continue
-        }
-        if (!canSee(other)) {
-            continue
-        }
-        hidePlayer(other)
-        showPlayer(other)
-    }
+enum class ErrorMessages(message: String) {
+    NO_PERMISSION("You do not have permission!"),
+    INVALID_ARG("Invalid argument!")
+    ;
+    val message: String = "${ChatColor.RED}$message"
 }
-
-fun Permissible.hasPermission(permission: Permissions): Boolean = hasPermission(permission.perm)
-
-fun CommandSender.sendMessage(error: ErrorMessages) = sendMessage(error.message)

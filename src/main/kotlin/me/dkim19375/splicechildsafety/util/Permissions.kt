@@ -18,23 +18,9 @@
 
 package me.dkim19375.splicechildsafety.util
 
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import org.bukkit.permissions.Permissible
+private const val BASE = "splicechildsafety"
 
-fun Player.updateSkinsForOthers() {
-    for (other in world.players) {
-        if (other.uniqueId == uniqueId) {
-            continue
-        }
-        if (!canSee(other)) {
-            continue
-        }
-        hidePlayer(other)
-        showPlayer(other)
-    }
+enum class Permissions(val perm: String) {
+    COMMAND("$BASE.command"),
+    RELOAD("$BASE.reload")
 }
-
-fun Permissible.hasPermission(permission: Permissions): Boolean = hasPermission(permission.perm)
-
-fun CommandSender.sendMessage(error: ErrorMessages) = sendMessage(error.message)
