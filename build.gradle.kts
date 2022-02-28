@@ -56,7 +56,7 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:4.7.0")
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
 
-    implementation("net.kyori:adventure-api:4.9.3")
+    implementation("net.kyori:adventure-api:4.10.0")
     implementation("dev.triumphteam:triumph-gui:3.1.1")
     implementation("net.kyori:adventure-platform-bukkit:4.0.1")
     implementation("me.mattstudios:triumph-config:1.0.5-SNAPSHOT")
