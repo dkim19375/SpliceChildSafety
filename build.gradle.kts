@@ -61,7 +61,7 @@ dependencies {
     implementation("net.kyori:adventure-platform-bukkit:4.1.0")
     implementation("me.mattstudios:triumph-config:1.0.5-SNAPSHOT")
 
-    implementation("io.github.dkim19375:dkim-bukkit-core:3.3.32") {
+    implementation("io.github.dkim19375:dkim-bukkit-core:3.3.34") {
         exclude(group = "org.jetbrains.kotlin")
     }
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KT_VER") {
