@@ -58,7 +58,7 @@ dependencies {
 
     implementation("net.kyori:adventure-api:4.11.0")
     implementation("dev.triumphteam:triumph-gui:3.1.2")
-    implementation("net.kyori:adventure-platform-bukkit:4.1.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.1.1")
     implementation("me.mattstudios:triumph-config:1.0.5-SNAPSHOT")
 
     implementation("io.github.dkim19375:dkim-bukkit-core:3.3.40") {
